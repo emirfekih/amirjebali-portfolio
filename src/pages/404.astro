@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/works';
+---
+
+<Base title="Not found">
+  <main class="nf">
+    <p><span class="red">●</span> 00:00:00:00</p>
+    <h1>No signal. This page doesn't exist.</h1>
+    <p><a class="link" href={href()}>← Back to the index</a></p>
+  </main>
+</Base>
+
+<style>
+  .nf { padding: var(--s3) var(--margin); display: grid; gap: var(--s3); }
+</style>

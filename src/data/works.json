@@ -1,0 +1,213 @@
+[
+  {
+    "id": "lereve-bobine-n449",
+    "title": "LeReve_BobineN449",
+    "category": "film",
+    "year": 2026,
+    "with": "Graduation film, IAD",
+    "role": "Picture and sound edit",
+    "description": "Graduation project at IAD.",
+    "video": { "provider": "drive", "id": "1p8Z-oDUtqjBWayQuQLY2GP0XxN_RPBO3" }
+  },
+  {
+    "id": "raccommoder-nos-traces",
+    "title": "Raccommoder nos traces",
+    "category": "film",
+    "year": 2026,
+    "with": "Shen Mokosinski, IAD",
+    "role": "Picture edit, first sound edit",
+    "description": "Documentary major at IAD. A film by Shen Mokosinski.",
+    "credits": [{ "label": "Director", "value": "Shen Mokosinski" }],
+    "video": { "provider": "drive", "id": "1cFpmG9_VqkIaBAaZudkS019oFUtYgsGU" }
+  },
+  {
+    "id": "woodstock-new-age-2026",
+    "title": "Woodstock New Age 2026",
+    "category": "post",
+    "year": 2026,
+    "with": "Promotional film",
+    "role": "Direction, picture and sound edit",
+    "video": { "provider": "drive", "id": "1SsRkZWXW7qx0bC-5nWP2L9etqiCpeRv5" }
+  },
+  {
+    "id": "leskimo-renseignement",
+    "title": "Leskimo — Renseignement",
+    "category": "music",
+    "year": 2026,
+    "with": "Music video",
+    "role": "Direction, edit",
+    "video": { "provider": "youtube", "id": "80rzGIfbWjc" }
+  },
+  {
+    "id": "woodstock-new-age-2025",
+    "title": "Woodstock New Age 2025",
+    "category": "post",
+    "year": 2025,
+    "with": "Promotional film",
+    "role": "Direction, picture and sound edit",
+    "video": { "provider": "drive", "id": "1xM4bHPZQN7fYMwY06hkWN4omsZcGSqPZ" }
+  },
+  {
+    "id": "hors-temps",
+    "title": "Hors Temps",
+    "category": "film",
+    "year": 2019,
+    "yearEnd": 2024,
+    "with": "Documentary channel",
+    "role": "Picture and sound edit",
+    "description": "A YouTube channel of documentaries.",
+    "external": { "label": "Watch the channel on YouTube", "url": "https://www.youtube.com/@horstemps2780/videos" }
+  },
+  {
+    "id": "infinit-888-freestyle",
+    "title": "Infinit — 888 Freestyle",
+    "category": "music",
+    "year": 2024,
+    "with": "Music video",
+    "role": "Direction, edit",
+    "video": { "provider": "youtube", "id": "4ZxT3O9244A" }
+  },
+  {
+    "id": "huntrill-le-biff-et-moi",
+    "title": "Huntrill — Le Biff et moi",
+    "category": "music",
+    "year": 2024,
+    "with": "Music video",
+    "role": "Direction, edit",
+    "video": { "provider": "youtube", "id": "93uy5ysV6XA" }
+  },
+  {
+    "id": "veust-fitness-park",
+    "title": "VEUST — Fitness Park",
+    "category": "music",
+    "year": 2024,
+    "with": "Commercial",
+    "role": "Direction, edit",
+    "video": { "provider": "youtube", "id": "Uew4Y08W_6s" }
+  },
+  {
+    "id": "electronic-music-club",
+    "title": "Electronic music club",
+    "category": "post",
+    "year": 2023,
+    "with": "Promotional film",
+    "role": "Direction, picture and sound edit",
+    "video": { "provider": "drive", "id": "1AERGrTER1X-_iHy235_ljtAr1fAvFivg" }
+  },
+  {
+    "id": "tribute-to-halim-el-dabh",
+    "title": "Tribute to Halim El-Dabh",
+    "category": "post",
+    "year": 2023,
+    "with": "Audiovisual piece",
+    "role": "Picture and sound edit",
+    "video": { "provider": "drive", "id": "192RPbmYAA-FyvoY853OpkY5DLBLY5Z_b" }
+  },
+  {
+    "id": "tribute-to-osho",
+    "title": "Tribute to Osho",
+    "category": "post",
+    "year": 2023,
+    "with": "Audiovisual piece",
+    "role": "Picture and sound edit",
+    "video": { "provider": "drive", "id": "1rtPzALupnLcRdYyAArTs10OZNjf5LAZT" }
+  },
+  {
+    "id": "ktyb-mestwi",
+    "title": "KTYB — Mestwi",
+    "category": "music",
+    "year": 2023,
+    "with": "Music video",
+    "role": "Direction, edit",
+    "video": { "provider": "youtube", "id": "szxqyQhz8OE" }
+  },
+  {
+    "id": "ktyb-infrared",
+    "title": "KTYB — Infrared",
+    "category": "music",
+    "year": 2023,
+    "with": "Music video",
+    "role": "Direction, edit",
+    "video": { "provider": "youtube", "id": "Mr0Sdxl--iM" }
+  },
+  {
+    "id": "tribute-to-basquiat",
+    "title": "Tribute to Basquiat",
+    "category": "post",
+    "year": 2022,
+    "with": "Audiovisual piece",
+    "role": "Picture and sound edit",
+    "video": { "provider": "drive", "id": "13ekjrElwl4wUsVs2J5Bwi-bN9CKDN4rv" }
+  },
+  {
+    "id": "ktyb-anaman",
+    "title": "KTYB — ANAMAN",
+    "category": "music",
+    "year": 2022,
+    "with": "Music video",
+    "role": "Direction, edit",
+    "video": { "provider": "youtube", "id": "IYLmmG_IBqI" }
+  },
+  {
+    "id": "winter-bloom",
+    "title": "Winter Bloom",
+    "category": "film",
+    "year": 2021,
+    "with": "Souheila Ghorbel",
+    "role": "Edit, sound work",
+    "description": "Photography and video project by Souheila Ghorbel.",
+    "credits": [{ "label": "Artist", "value": "Souheila Ghorbel" }],
+    "external": { "label": "See the project on souheilaghorbel.com", "url": "https://souheilaghorbel.com/Exhibitions-1" }
+  },
+  {
+    "id": "decentralize",
+    "title": "Decentralize",
+    "category": "post",
+    "year": 2019,
+    "with": "Trailer",
+    "role": "Picture and sound edit",
+    "video": { "provider": "drive", "id": "1p7oR_vu_rdtvirqDV9ilJDOfIvfYUysI" }
+  },
+  {
+    "id": "60-waiting-shots-and-a-shot",
+    "title": "60 Waiting Shots and a Shot",
+    "category": "film",
+    "year": 2018,
+    "with": "Youssef Sanheji, ISAMM",
+    "role": "Sound recording, picture and sound edit",
+    "description": "Observational documentary, about 20 minutes. Graduation film at ISAMM, Tunisia.",
+    "credits": [
+      { "label": "Director", "value": "Youssef Sanheji" },
+      { "label": "School", "value": "ISAMM, Tunisia" },
+      { "label": "Length", "value": "~20 min" }
+    ],
+    "video": { "provider": "vimeo", "id": "286436474", "protected": true },
+    "links": [{ "label": "IMDb", "url": "https://www.imdb.com/title/tt12564740/" }]
+  },
+  {
+    "id": "weldi-dear-son",
+    "title": "Weldi / Dear Son",
+    "category": "film",
+    "year": 2018,
+    "with": "Mohamed Ben Attia",
+    "role": "Trailer edit",
+    "description": "Feature film by Mohamed Ben Attia.",
+    "credits": [{ "label": "Director", "value": "Mohamed Ben Attia" }],
+    "video": { "provider": "youtube", "id": "81tpR97myIE" }
+  },
+  {
+    "id": "aqua",
+    "title": "Aqua",
+    "category": "film",
+    "year": 2017,
+    "with": "Y. Sanheji, M. Ben Rejeb",
+    "role": "Edit, sound work",
+    "description": "Experimental documentary, ISAMM, Tunisia.",
+    "credits": [
+      { "label": "Directors", "value": "Youssef Sanheji, Mehdi Ben Rejeb" },
+      { "label": "School", "value": "ISAMM, Tunisia" }
+    ],
+    "video": { "provider": "vimeo", "id": "244573107", "protected": true },
+    "links": [{ "label": "IMDb", "url": "https://www.imdb.com/title/tt12619184/" }]
+  }
+]

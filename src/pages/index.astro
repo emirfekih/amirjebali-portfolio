@@ -1,0 +1,306 @@
+---
+import Base from '../layouts/Base.astro';
+import InfoPanel from '../components/InfoPanel.astro';
+import { site } from '../data/site';
+import { categories, getWorks, tc, years, workHref, stillUrl, href } from '../lib/works';
+
+const works = await getWorks();
+const count = (key: string) => works.filter((w) => w.data.category === key).length;
+const first = Math.min(...works.map((w) => w.data.year));
+const last = Math.max(...works.map((w) => w.data.yearEnd ?? w.data.year));
+---
+
+<Base>
+  <header class="hd">
+    <a class="hd-name" href={href()}>
+      <h1>{site.name}</h1>
+      <p class="muted">{site.tagline}</p>
+    </a>
+
+    <nav class="hd-filters" aria-label="Filter works">
+      <button type="button" data-filter="all" aria-pressed="true">All <span>{works.length}</span></button>
+      {categories.map((c) => (
+        <button type="button" data-filter={c.key} aria-pressed="false">{c.label} <span>{count(c.key)}</span></button>
+      ))}
+    </nav>
+
+    <div class="hd-views" role="group" aria-label="View">
+      <button type="button" data-view="list" aria-pressed="true">List</button><span class="muted"> / </span><button type="button" data-view="images" aria-pressed="false">Images</button>
+    </div>
+
+    <button type="button" class="hd-info" data-open-info>Info</button>
+  </header>
+
+  <main id="works" data-view="list">
+    <div class="list">
+      <div class="row row-head muted" aria-hidden="true">
+        <span>TC</span><span>Title</span><span class="c-with">With</span><span class="c-role">Role</span><span class="c-year">Year</span>
+      </div>
+      <ol>
+        {works.map((w, i) => (
+          <li data-category={w.data.category}>
+            <a
+              class="row"
+              href={workHref(w)}
+              data-tc={tc(i)}
+              data-title={w.data.title}
+              data-still={stillUrl(w)}
+            >
+              <span class="c-tc" data-short={tc(i).slice(-2)}>{tc(i)}</span>
+              <span class="c-title">{w.data.title}</span>
+              <span class="c-with">{w.data.with}</span>
+              <span class="c-role">{w.data.role}</span>
+              <span class="c-year">{years(w)}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <ol class="grid">
+      {works.map((w, i) => {
+        const still = stillUrl(w);
+        return (
+          <li data-category={w.data.category}>
+            <a href={workHref(w)}>
+              {still ? (
+                <img class="still" src={still} alt="" loading="lazy" decoding="async" />
+              ) : (
+                <div class="slate" aria-hidden="true">
+                  <span class="slate-tc">{tc(i)}</span>
+                </div>
+              )}
+              <p><span class="c-title">{w.data.title}</span> <span class="muted">{years(w)}</span></p>
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+  </main>
+
+  <div class="preview" aria-hidden="true"></div>
+
+  <footer class="ft">
+    <p class="muted"><span id="count">{works.length}</span> works, {first}–{last}</p>
+    <p class="ft-rec"><span class="red">●</span> <span id="clock">00:00:00:00</span></p>
+  </footer>
+
+  <InfoPanel />
+</Base>
+
+<style>
+  /* ---------- header ---------- */
+  .hd {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    align-items: start;
+    padding: var(--s3) var(--margin) var(--s4);
+    background: var(--paper);
+  }
+  .hd-name { grid-column: 1 / 4; }
+  .hd-filters { grid-column: 4 / 9; display: flex; flex-wrap: wrap; column-gap: 1.5ch; }
+  .hd-views { grid-column: 9 / 11; }
+  .hd-info { grid-column: 11 / 13; justify-self: end; }
+
+  .hd button[aria-pressed='false'] { color: var(--muted); }
+  .hd button[aria-pressed='true'] span { color: var(--red); }
+  @media (hover: hover) {
+    .hd button:hover, .hd-info:hover { color: var(--red); }
+  }
+
+  /* ---------- list view ---------- */
+  .list { padding: 0 var(--margin); }
+  .row {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    padding: 1px 0;
+  }
+  .row > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .c-tc { grid-column: 1; }
+  .c-title { grid-column: 2 / 6; }
+  .c-with { grid-column: 6 / 9; }
+  .c-role { grid-column: 9 / 12; }
+  .c-year { grid-column: 12; }
+  .row-head { margin-bottom: var(--s2); }
+
+  @media (hover: hover) {
+    .list ol:has(.row:hover) .row:not(:hover) { opacity: 0.35; }
+    .row:hover .c-tc { color: var(--red); }
+    .row { transition: opacity 0.15s; }
+  }
+
+  /* ---------- images view ---------- */
+  .grid {
+    display: none;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s5) var(--gutter);
+    padding: 0 var(--margin);
+  }
+  .grid p { margin-top: var(--s2); display: flex; justify-content: space-between; gap: 1ch; }
+  .grid .c-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @media (hover: hover) {
+    .grid a:hover .c-title { color: var(--red); }
+  }
+
+  main[data-view='images'] .list { display: none; }
+  main[data-view='images'] .grid { display: grid; }
+  main { padding-bottom: var(--s7); min-height: 70vh; }
+  [hidden] { display: none !important; }
+
+  /* ---------- hover preview ---------- */
+  .preview {
+    position: fixed;
+    right: var(--margin);
+    bottom: var(--s6);
+    width: min(30vw, 420px);
+    pointer-events: none;
+    visibility: hidden;
+    z-index: 5;
+  }
+  .preview.show { visibility: visible; }
+
+  /* ---------- footer ---------- */
+  .ft {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: var(--s2) var(--margin) var(--s3);
+    pointer-events: none;
+    background: linear-gradient(to top, var(--paper) 60%, transparent);
+  }
+
+  /* ---------- tablet ---------- */
+  @media (max-width: 959px) {
+    .hd-name { grid-column: 1 / 5; }
+    .hd-filters { grid-column: 5 / 13; grid-row: 1; }
+    .hd-views { grid-column: 5 / 10; grid-row: 2; margin-top: var(--s2); }
+    .hd-info { grid-column: 10 / 13; grid-row: 2; margin-top: var(--s2); }
+    .c-with { display: none; }
+    .c-title { grid-column: 2 / 8; }
+    .c-role { grid-column: 8 / 12; }
+    .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .preview { display: none; }
+  }
+
+  /* ---------- phone ---------- */
+  @media (max-width: 599px) {
+    .hd { row-gap: var(--s3); }
+    .hd-name { grid-column: 1 / 10; grid-row: 1; }
+    .hd-info { grid-column: 10 / 13; grid-row: 1; margin-top: 0; }
+    .hd-filters {
+      grid-column: 1 / -1; grid-row: 2;
+      flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+      margin: 0 calc(var(--margin) * -1); padding: 0 var(--margin);
+    }
+    .hd-filters button { white-space: nowrap; }
+    .hd-views { grid-column: 1 / -1; grid-row: 3; margin-top: 0; }
+
+    .row-head { display: none; }
+    .row {
+      grid-template-columns: 3ch minmax(0, 1fr) auto;
+      column-gap: 1.5ch;
+      padding: var(--s1) 0 var(--s2);
+    }
+    .c-tc { grid-column: 1; grid-row: 1; font-size: 0; }
+    .c-tc::after { content: attr(data-short); font-size: var(--fs); color: var(--muted); }
+    .c-title { grid-column: 2; grid-row: 1; }
+    .c-year { grid-column: 3; grid-row: 1; color: var(--muted); }
+    .c-role { grid-column: 2 / 4; grid-row: 2; color: var(--muted); }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4) var(--gutter); }
+  }
+</style>
+
+<script>
+  const main = document.getElementById('works')!;
+  const items = main.querySelectorAll<HTMLLIElement>('li[data-category]');
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const viewButtons = document.querySelectorAll<HTMLButtonElement>('[data-view]');
+  const countEl = document.getElementById('count')!;
+
+  /* ---------- filters (kept in the URL so a filtered index can be shared) ---------- */
+  function setFilter(key: string) {
+    if (![...filterButtons].some((b) => b.dataset.filter === key)) key = 'all';
+    filterButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === key)));
+    let shown = 0;
+    items.forEach((li) => {
+      const match = key === 'all' || li.dataset.category === key;
+      li.hidden = !match;
+      if (match && li.closest('.list')) shown++;
+    });
+    countEl.textContent = String(shown);
+    const url = new URL(location.href);
+    if (key === 'all') url.searchParams.delete('f');
+    else url.searchParams.set('f', key);
+    history.replaceState(null, '', url);
+  }
+  filterButtons.forEach((b) => b.addEventListener('click', () => setFilter(b.dataset.filter!)));
+  setFilter(new URL(location.href).searchParams.get('f') ?? 'all');
+
+  /* ---------- list / images view (remembered per visitor) ---------- */
+  function setView(view: string) {
+    if (view !== 'images') view = 'list';
+    main.dataset.view = view;
+    document.querySelector('.preview')?.classList.remove('show');
+    viewButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
+    try { localStorage.setItem('view', view); } catch {}
+  }
+  viewButtons.forEach((b) => b.addEventListener('click', () => setView(b.dataset.view!)));
+  try { setView(localStorage.getItem('view') ?? 'list'); } catch { setView('list'); }
+
+  /* ---------- hover preview: the work's still, or a slate when there is none ---------- */
+  const preview = document.querySelector<HTMLElement>('.preview')!;
+  if (matchMedia('(hover: hover)').matches) {
+    main.querySelectorAll<HTMLAnchorElement>('.list .row[data-tc]').forEach((row) => {
+      row.addEventListener('mouseenter', () => {
+        const { still, tc, title } = row.dataset;
+        preview.replaceChildren();
+        if (still) {
+          const img = new Image();
+          img.className = 'still';
+          img.alt = '';
+          img.src = still;
+          preview.append(img);
+        } else {
+          const slate = document.createElement('div');
+          slate.className = 'slate';
+          const a = document.createElement('span');
+          a.className = 'slate-tc';
+          a.textContent = tc ?? '';
+          const b = document.createElement('span');
+          b.textContent = title ?? '';
+          slate.append(a, b);
+          preview.append(slate);
+        }
+        preview.classList.add('show');
+      });
+      row.addEventListener('mouseleave', () => preview.classList.remove('show'));
+    });
+  }
+
+  /* ---------- running record timecode, 25 fps ---------- */
+  const clock = document.getElementById('clock')!;
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const start = performance.now();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    let lastFrame = -1;
+    const tick = (now: number) => {
+      const frames = Math.floor(((now - start) / 1000) * 25);
+      if (frames !== lastFrame) {
+        lastFrame = frames;
+        const f = frames % 25;
+        const s = Math.floor(frames / 25);
+        clock.textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}:${pad(f)}`;
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+</script>

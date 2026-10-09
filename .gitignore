@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# The source PDF lists private viewing passwords: never commit it.
+*.pdf
+!public/cv.pdf
+.claude/

@@ -1,0 +1,89 @@
+---
+import { site } from '../data/site';
+import { href } from '../lib/works';
+---
+
+<dialog id="info" class="info" aria-labelledby="info-title">
+  <div class="info-inner" tabindex="-1" autofocus>
+    <div class="info-top">
+      <h2 id="info-title">Info</h2>
+      <button type="button" class="red" data-close-info>Close ×</button>
+    </div>
+
+    <div class="info-bio">
+      {site.bio.map((p) => <p>{p}</p>)}
+    </div>
+
+    <dl class="info-cols">
+      <div>
+        <dt class="muted">Education</dt>
+        {site.education.map((e) => <dd>{e}</dd>)}
+      </div>
+      <div>
+        <dt class="muted">Contact</dt>
+        <dd><a class="link" href={`mailto:${site.email}`}>{site.email}</a></dd>
+        {site.socials.map((s) => (
+          <dd><a class="link" href={s.url} target="_blank" rel="noopener">{s.label} ↗</a></dd>
+        ))}
+        {site.cv && <dd><a class="link" href={href(site.cv)} download>CV (PDF) ↓</a></dd>}
+      </div>
+    </dl>
+  </div>
+</dialog>
+
+<style>
+  .info {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(620px, 100%);
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-left: 1px solid var(--red);
+    background: var(--paper);
+    color: var(--ink);
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), display 0.35s allow-discrete, overlay 0.35s allow-discrete;
+  }
+  .info[open] { transform: none; }
+  @starting-style { .info[open] { transform: translateX(100%); } }
+  .info::backdrop { background: rgb(243 241 234 / 0.55); }
+
+  .info-inner {
+    padding: var(--s3) var(--margin) var(--s6);
+    display: grid;
+    gap: var(--s5);
+  }
+  .info-inner:focus { outline: none; }
+  .info-top { display: flex; justify-content: space-between; }
+  .info-bio { font-size: var(--fs-l); line-height: 1.4; display: grid; gap: 1em; max-width: 46ch; }
+  .info-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); }
+  .info-cols dd { margin-top: var(--s1); }
+  @media (max-width: 599px) { .info-cols { grid-template-columns: 1fr; gap: var(--s4); } }
+</style>
+
+<script>
+  const dialog = document.getElementById('info') as HTMLDialogElement;
+
+  const open = () => {
+    if (!dialog.open) dialog.showModal();
+    history.replaceState(null, '', '#info');
+  };
+  const close = () => {
+    dialog.close();
+  };
+
+  dialog.addEventListener('close', () => {
+    if (location.hash === '#info') history.replaceState(null, '', location.pathname + location.search);
+  });
+  // A click on the backdrop lands on the dialog element itself.
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) close();
+  });
+  document.querySelectorAll('[data-open-info]').forEach((b) => b.addEventListener('click', open));
+  document.querySelectorAll('[data-close-info]').forEach((b) => b.addEventListener('click', close));
+  if (location.hash === '#info') open();
+</script>
