@@ -5,6 +5,7 @@
   --red: #c8201a;        /* 5.2:1 on paper */
   --slate: #1d1c1a;
   --rule: #14141426;
+  --trail: var(--ink);
 
   --font: 'Courier Prime', 'Courier New', monospace;
   --fs: 13px;

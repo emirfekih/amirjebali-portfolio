@@ -1,0 +1,122 @@
+---
+// A thin line that trails the pointer and fades from its far end, like a
+// cut being drawn. Mouse and trackpad only; off for touch and reduced motion.
+---
+
+<canvas class="cursor-trail" aria-hidden="true"></canvas>
+
+<style>
+  .cursor-trail {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 100000;
+  }
+</style>
+
+<script>
+  const LINE_WIDTH = 1;
+  const FADE_MS = 500;   // how long a point of the line lives
+  const LAG = 0.2;       // how far the line trails behind the pointer (0 = glued)
+  const SPACING = 10;    // px between recorded points
+
+  const canvas = document.querySelector<HTMLCanvasElement>('.cursor-trail')!;
+  const enabled =
+    matchMedia('(hover: hover) and (pointer: fine)').matches &&
+    !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!enabled) {
+    canvas.remove();
+  } else {
+    const ctx = canvas.getContext('2d')!;
+    const color = getComputedStyle(document.body).getPropertyValue('--trail').trim() || '#141414';
+
+    type Point = { x: number; y: number; t: number };
+    let points: Point[] = [];
+    let target: { x: number; y: number } | null = null;
+    let head: { x: number; y: number } | null = null;
+    let running = false;
+    let last = 0;
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = innerWidth * dpr;
+      canvas.height = innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    addEventListener('resize', resize);
+
+    addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      target = { x: e.clientX, y: e.clientY };
+      if (!head) head = { ...target };
+      start();
+    }, { passive: true });
+
+    // Leaving the window (or entering a video iframe) lets the line fade out.
+    document.documentElement.addEventListener('pointerleave', () => {
+      target = null;
+      head = null;
+    });
+
+    function start() {
+      if (running) return;
+      running = true;
+      last = performance.now();
+      requestAnimationFrame(frame);
+    }
+
+    function frame(now: number) {
+      const dt = Math.min(now - last, 64);
+      last = now;
+
+      if (target && head) {
+        // Ease the head toward the pointer, independent of frame rate.
+        const k = 1 - Math.pow(LAG, dt / 16.67);
+        head.x += (target.x - head.x) * k;
+        head.y += (target.y - head.y) * k;
+        const prev = points[points.length - 1];
+        if (!prev || Math.hypot(head.x - prev.x, head.y - prev.y) >= SPACING) {
+          points.push({ x: head.x, y: head.y, t: now });
+        }
+      }
+
+      points = points.filter((p) => now - p.t < FADE_MS);
+      draw(now);
+
+      if (points.length || (target && head && Math.hypot(target.x - head.x, target.y - head.y) > 0.5)) {
+        requestAnimationFrame(frame);
+      } else {
+        running = false;
+      }
+    }
+
+    function draw(now: number) {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      const pts = head && target ? [...points, { ...head, t: now }] : points;
+      if (pts.length < 2) return;
+
+      ctx.lineWidth = LINE_WIDTH;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = color;
+
+      // Smooth curve through the midpoints; each piece fades with its age.
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1];
+        const b = pts[i];
+        const from = i === 1 ? a : { x: (pts[i - 2].x + a.x) / 2, y: (pts[i - 2].y + a.y) / 2 };
+        const to = i === pts.length - 1 ? b : { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+        ctx.globalAlpha = Math.max(0, 1 - (now - a.t) / FADE_MS);
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.quadraticCurveTo(a.x, a.y, to.x, to.y);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+  }
+</script>
