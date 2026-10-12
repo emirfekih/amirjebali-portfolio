@@ -5,7 +5,6 @@ import { site } from '../data/site';
 import { categories, getWorks, tc, years, workHref, stillUrl, href } from '../lib/works';
 
 const works = await getWorks();
-const count = (key: string) => works.filter((w) => w.data.category === key).length;
 const first = Math.min(...works.map((w) => w.data.year));
 const last = Math.max(...works.map((w) => w.data.yearEnd ?? w.data.year));
 ---
@@ -14,13 +13,13 @@ const last = Math.max(...works.map((w) => w.data.yearEnd ?? w.data.year));
   <header class="hd">
     <a class="hd-name" href={href()}>
       <h1>{site.name}</h1>
-      <p class="muted">{site.tagline}</p>
+      {site.roles.map((r) => <p class="muted">{r}</p>)}
     </a>
 
     <nav class="hd-filters" aria-label="Filter works">
-      <button type="button" data-filter="all" aria-pressed="true">All <span>{works.length}</span></button>
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
       {categories.map((c) => (
-        <button type="button" data-filter={c.key} aria-pressed="false">{c.label} <span>{count(c.key)}</span></button>
+        <button type="button" data-filter={c.key} aria-pressed="false">{c.label}</button>
       ))}
     </nav>
 
@@ -82,7 +81,6 @@ const last = Math.max(...works.map((w) => w.data.yearEnd ?? w.data.year));
 
   <footer class="ft">
     <p class="muted"><span id="count">{works.length}</span> works, {first}–{last}</p>
-    <p class="ft-rec"><span class="red">●</span> <span id="clock">00:00:00:00</span></p>
   </footer>
 
   <InfoPanel />
@@ -107,7 +105,6 @@ const last = Math.max(...works.map((w) => w.data.yearEnd ?? w.data.year));
   .hd-info { grid-column: 11 / 13; justify-self: end; }
 
   .hd button[aria-pressed='false'] { color: var(--muted); }
-  .hd button[aria-pressed='true'] span { color: var(--red); }
   @media (hover: hover) {
     .hd button:hover, .hd-info:hover { color: var(--red); }
   }
@@ -283,24 +280,5 @@ const last = Math.max(...works.map((w) => w.data.yearEnd ?? w.data.year));
       });
       row.addEventListener('mouseleave', () => preview.classList.remove('show'));
     });
-  }
-
-  /* ---------- running record timecode, 25 fps ---------- */
-  const clock = document.getElementById('clock')!;
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const start = performance.now();
-    const pad = (n: number) => String(n).padStart(2, '0');
-    let lastFrame = -1;
-    const tick = (now: number) => {
-      const frames = Math.floor(((now - start) / 1000) * 25);
-      if (frames !== lastFrame) {
-        lastFrame = frames;
-        const f = frames % 25;
-        const s = Math.floor(frames / 25);
-        clock.textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}:${pad(f)}`;
-      }
-      requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
   }
 </script>
