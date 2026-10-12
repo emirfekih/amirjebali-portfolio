@@ -1,7 +1,8 @@
-// Site-wide details. PLACEHOLDER content: replace the bio and contact before launch.
+// Site-wide details. The bio and social links are still PLACEHOLDERS: replace them before launch.
 export const site = {
   name: 'Amir Jebali',
-  tagline: 'Film editor, sound, art direction',
+  // Shown on two lines under the name; joined with ' · ' in the browser tab title.
+  roles: ['Film, sound editor', 'Artistic director'],
   description:
     'Amir Jebali is a film editor working across documentary, fiction and music videos, cutting picture and sound as one material.',
   bio: [
@@ -9,7 +10,7 @@ export const site = {
     'Trained at ISAMM in Tunisia and at IAD in Belgium, he has edited documentaries, trailers and audiovisual pieces since 2017, and directs and cuts music videos.',
   ],
   education: ['IAD, Belgium', 'ISAMM, Tunisia'],
-  email: 'hello@amirjebali.com',
+  email: 'amirjebalipr@gmail.com',
   socials: [
     { label: 'Instagram', url: 'https://www.instagram.com/' },
     { label: 'Vimeo', url: 'https://vimeo.com/' },
